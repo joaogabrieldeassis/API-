@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\webapi\\shop\\shop.csproj": {}
+    "C:\\WebAPI\\shop\\shop.csproj": {}
   },
   "projects": {
-    "C:\\webapi\\shop\\shop.csproj": {
+    "C:\\WebAPI\\shop\\shop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\webapi\\shop\\shop.csproj",
+        "projectUniqueName": "C:\\WebAPI\\shop\\shop.csproj",
         "projectName": "shop",
-        "projectPath": "C:\\webapi\\shop\\shop.csproj",
+        "projectPath": "C:\\WebAPI\\shop\\shop.csproj",
         "packagesPath": "C:\\Users\\Windows\\.nuget\\packages\\",
-        "outputPath": "C:\\webapi\\shop\\obj\\",
+        "outputPath": "C:\\WebAPI\\shop\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -21,15 +21,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0"
+          "netcoreapp3.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
+          "netcoreapp3.0": {
+            "targetAlias": "netcoreapp3.0",
             "projectReferences": {}
           }
         },
@@ -40,14 +40,8 @@
         }
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
-          "dependencies": {
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.2.3, )"
-            }
-          },
+        "netcoreapp3.0": {
+          "targetAlias": "netcoreapp3.0",
           "imports": [
             "net461",
             "net462",
@@ -58,6 +52,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.0.3, 3.0.3]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
