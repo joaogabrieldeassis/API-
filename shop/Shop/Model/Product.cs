@@ -22,6 +22,6 @@ namespace Shop.Model
         
         [Range(1, int.MaxValue, ErrorMessage = "Categoria inválida")]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category Categoreeeeeeeeeeeeeeeeeeeeeeeeeey { get; set; }
     }
 }
