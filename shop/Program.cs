@@ -5,20 +5,45 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Shop;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureAuthentication(builder);
 ConfigureMVC(builder);
 ConfigureServices(builder);
 
+builder.Services.AddEndpointsApiExplorer();
+
+
 var app = builder.Build();
 LoadConfiguration(app);
+app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI(c=>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shop API V1");
+}
+);
 
+app.UseRouting();
+app.UseCors(x => x
+.AllowAnyOrigin()
+.AllowAnyMethod()
+.AllowAnyHeader());
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.Run();
 
 //Método para configurar o meu appsettings.json
@@ -61,9 +86,18 @@ void ConfigureMVC(WebApplicationBuilder builder)
 //Método para serviços Do banco e Token
 void ConfigureServices(WebApplicationBuilder builder)
 {
+    builder.Services.AddCors();
+    builder.Services.AddResponseCompression(options =>
+    {
+        options.Providers.Add<GzipCompressionProvider>();
+        options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
+    });
     builder.Services.AddControllers();
     //builder.Services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
     builder.Services.AddDbContext<DataContext>();
-    builder.Services.AddScoped<DataContext, DataContext>();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        options.SwaggerDoc("v1", new OpenApiInfo { Title = "Shop Api", Version = "v1" });
+    });
     builder.Services.AddMvc();
 }

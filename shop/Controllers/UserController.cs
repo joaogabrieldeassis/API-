@@ -49,14 +49,18 @@ namespace Shop.Controllers
         }
         [HttpPost]
         [Route("")]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] User user, [FromServices] DataContext context)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
             try
             {
+                user.Role = "employee";
                 await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();
+
+                user.Password = "";
                 return Ok(user);
             }
             catch (Exception)
@@ -67,6 +71,7 @@ namespace Shop.Controllers
         }
         [HttpPost]
         [Route("Login")]
+        [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Authentication([FromBody] User user,[FromServices] DataContext context)
         {
             
@@ -84,6 +89,7 @@ namespace Shop.Controllers
                 token = token,
             };
                 await context.SaveChangesAsync();
+            user.Password = "";
                 return Ok(user);
          
             
