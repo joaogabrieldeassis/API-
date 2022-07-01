@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using System.Configuration;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Shop;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureAuthentication(builder);
@@ -26,7 +30,23 @@ void LoadConfiguration(WebApplication app)
 //Método da Configuração da minha Autenticação e autorização
 void ConfigureAuthentication(WebApplicationBuilder builder)
 {
-    
+    var key = Encoding.ASCII.GetBytes(Settings.Secrete);
+    builder.Services.AddAuthentication(x =>
+    {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(x =>
+    {
+        x.RequireHttpsMetadata = false;
+        x.SaveToken = true;
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        };
+    });
 }
 
 //Método para Desabilitar a validação automatica da minha api

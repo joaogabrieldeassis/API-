@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Model;
 
 namespace Shop.Controllers
 {
-    [Route("products")]
+    [Route("v1/products")]
     public class ProductController : ControllerBase
     {
         [HttpGet]
         [Route("")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get([FromServices] DataContext context)
         {
             var products = await context.Products.Include(x=>x.Category).AsNoTracking().ToListAsync();
@@ -17,13 +19,16 @@ namespace Shop.Controllers
         }
         [HttpGet]
         [Route("{id:int}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetbyId(int id,[FromServices] DataContext context)
         {
             var products = await context.Products.Include(x => x.Category).AsNoTracking().FirstOrDefaultAsync(x=>x.Id==id);
             return Ok(products);
         }
         [HttpGet]
-        [Route("categories/{id:int}")] //
+        [Route("categories/{id:int}")]
+        [AllowAnonymous]
+        //
         public async Task<ActionResult> GetId(int id, [FromServices] DataContext context)
         {
             var products = await context.Products.Include(x => x.Category).AsNoTracking().Where(x => x.CategoryId == id).ToListAsync();
@@ -31,6 +36,7 @@ namespace Shop.Controllers
         }
         [HttpPost]
         [Route("")]
+        [Authorize(Roles = "employee")]
         public async Task<ActionResult<Product>> Post([FromServices] DataContext context,[FromBody] Product model)
         {
 

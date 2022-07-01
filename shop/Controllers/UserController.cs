@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Model;
-
+using Shop.Services;
 namespace Shop.Controllers
 {
     [Route("v1/users")]
@@ -10,13 +11,13 @@ namespace Shop.Controllers
     {
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> Get([FromServices] DataContext context)
+        [Authorize(Roles ="manager")]
+        public async Task<ActionResult<List<User>>> Get([FromServices] DataContext context)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            
             try
             {
-                var receiveUsers = await context.Users.AsNoTracking().ToArrayAsync();
+                var receiveUsers = await context.Users.AsNoTracking().ToListAsync();
                 return Ok(receiveUsers);
             }
             catch (Exception)
@@ -27,6 +28,7 @@ namespace Shop.Controllers
         }
         [HttpGet]
         [Route("{id:int}")]
+        [Authorize(Roles ="menager")]
         public async Task<IActionResult> GetId(int id, [FromServices] DataContext context,[FromBody] User user)
         {
             if (!ModelState.IsValid)
@@ -47,7 +49,7 @@ namespace Shop.Controllers
         }
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> Post([FromBody] User user,[FromServices] DataContext context)
+        public async Task<IActionResult> Post([FromBody] User user, [FromServices] DataContext context)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -63,8 +65,34 @@ namespace Shop.Controllers
                 return StatusCode(500, "Falha ao cadastrar o usuario");
             }
         }
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult<dynamic>> Authentication([FromBody] User user,[FromServices] DataContext context)
+        {
+            
+                var receiveUser = await context.Users.AsNoTracking()
+                    .Where(x=>x.Username == user.Username && x.Password == user.Password)
+                    .FirstOrDefaultAsync();
+
+                if (receiveUser == null)
+                    return StatusCode(404, "Usuario ou senha invalidos");
+
+                var token = TokenServices.GenerateToken(receiveUser);
+            return new
+            {
+                
+                token = token,
+            };
+                await context.SaveChangesAsync();
+                return Ok(user);
+         
+            
+                return StatusCode(500, "Falha ao cadastrar o usuario");
+            
+        }
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize(Roles ="manager")]
         public async Task<IActionResult> Post(int id,[FromBody] User user, [FromServices] DataContext context)
         {
             if (!ModelState.IsValid)
@@ -86,8 +114,9 @@ namespace Shop.Controllers
                 return StatusCode(500, "Falha ao cadastrar o usuario");
             }
         }
-        [HttpPut]
+        [HttpDelete]
         [Route("{id:int}")]
+        [Authorize(Roles ="manager")]
         public async Task<IActionResult> Delete(int id, [FromBody] User user, [FromServices] DataContext context)
         {
             var receiveDeleteUser = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
@@ -97,6 +126,7 @@ namespace Shop.Controllers
             try
             {
                 context.Users.Remove(user);
+                return Ok(user);
             }
             catch (Exception)
             {
