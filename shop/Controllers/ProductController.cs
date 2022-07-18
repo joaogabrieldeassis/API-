@@ -14,15 +14,15 @@ namespace Shop.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get([FromServices] DataContext context)
         {
-            var products = await context.Products.Include(x=>x.Category).AsNoTracking().ToListAsync();
+            var products = await context.Products.Include(x => x.Category).AsNoTracking().ToListAsync();
             return Ok(products);
         }
         [HttpGet]
         [Route("{id:int}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetbyId(int id,[FromServices] DataContext context)
+        public async Task<IActionResult> GetbyId(int id, [FromServices] DataContext context)
         {
-            var products = await context.Products.Include(x => x.Category).AsNoTracking().FirstOrDefaultAsync(x=>x.Id==id);
+            var products = await context.Products.Include(x => x.Category).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             return Ok(products);
         }
         [HttpGet]
@@ -37,9 +37,8 @@ namespace Shop.Controllers
         [HttpPost]
         [Route("")]
         [Authorize(Roles = "employee")]
-        public async Task<ActionResult<Product>> Post([FromServices] DataContext context,[FromBody] Product model)
+        public async Task<ActionResult<Product>> Post([FromServices] DataContext context, [FromBody] Product model)
         {
-
             try
             {
                 context.Products.Add(model);
@@ -52,5 +51,24 @@ namespace Shop.Controllers
                 return BadRequest(ModelState);
             }
         }
+        //[HttpPut]
+        //[Route("{id:int}")]
+        // public async Task<IActionResult> Put(int id, [FromServices] DataContext context, [FromBody] Product model)
+        // {
+        //     if (!ModelState.IsValid)
+        //         return BadRequest();
+
+        //     if (model.Id != id)
+        //         return StatusCode(404, "Produto não encontrado");
+        //     try
+        //     {
+
+        //     }
+        //     catch (System.Exception)
+        //     {
+
+        //         throw;
+        //     }
+        // }
     }
 }

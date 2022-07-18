@@ -75,7 +75,7 @@ namespace Shop.Controllers
             catch (Exception)
             {
 
-                return BadRequest(new { Message = "Não foi possivel atualizar a categoria" });
+                return BadRequest(new { Message = "Não foi possivel atualizar a categoria, tente novamente" });
             }
 
         }
