@@ -70,7 +70,7 @@ namespace Shop.Controllers
             catch (DbUpdateConcurrencyException)
             {
 
-                return BadRequest(new {Message = "Não foi possivel atualizar a categoria"});
+                return BadRequest(new {Message = "Não foi possivel atualizar a categoria, por favor tente novamente"});
             }
             catch (Exception)
             {
