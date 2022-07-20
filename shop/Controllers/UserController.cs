@@ -36,7 +36,7 @@ namespace Shop.Controllers
             try
             {
                 if (context.Users == null)
-                    return StatusCode(500, "Usuario inesxistente");
+                    return StatusCode(500, "Usuario inexistente");
 
                 var receiveUserId = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
                 return Ok(receiveUserId);
