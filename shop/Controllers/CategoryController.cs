@@ -57,7 +57,7 @@ namespace Shop.Controllers
         public async Task<ActionResult<Category>> Put(int id, [FromBody] Category model,[FromServices] DataContext context)
         {
             if (id != model.Id)
-                return NotFound(new { Message = "Categoria não encontrada" });
+                return NotFound(new { Message = "Ops Categoria não encontrada" });
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
