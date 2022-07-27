@@ -46,7 +46,7 @@ namespace Shop.Controllers
             catch (Exception)
             {
 
-                return StatusCode(500, "Erro ao salvar uma categoria");
+                return StatusCode(500, "Erro ao salvar uma categoriaaaaaaa");
             }
 
         }
