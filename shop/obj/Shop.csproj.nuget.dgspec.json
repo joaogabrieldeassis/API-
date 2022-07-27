@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\WebAPI\\Shop\\Shop.csproj": {}
+    "C:\\WebAPI\\shop\\Shop.csproj": {}
   },
   "projects": {
-    "C:\\WebAPI\\Shop\\Shop.csproj": {
+    "C:\\WebAPI\\shop\\Shop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\WebAPI\\Shop\\Shop.csproj",
+        "projectUniqueName": "C:\\WebAPI\\shop\\Shop.csproj",
         "projectName": "Shop",
-        "projectPath": "C:\\WebAPI\\Shop\\Shop.csproj",
+        "projectPath": "C:\\WebAPI\\shop\\Shop.csproj",
         "packagesPath": "C:\\Users\\Windows\\.nuget\\packages\\",
-        "outputPath": "C:\\WebAPI\\Shop\\obj\\",
+        "outputPath": "C:\\WebAPI\\shop\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
